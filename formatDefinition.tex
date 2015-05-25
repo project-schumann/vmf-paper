@@ -1,0 +1,37 @@
+%!TEX root = vmf_main.tex
+
+\section{Format Definition}
+
+VMF is built on top of the JSON format for two principal reasons. Firstly, VMF is composed primarily of ordered collections of integers for time and pitch data along with a header composed of key-value pairs. Because the VMF's representation only requires these two types of data structures, JSON is a perfect fit as JSON arrays provide an ordered collection, and JSON objects provide a collection of key-value pairs. Secondly, because JSON is an extremely popular data format, compatible tools and other parsers are readily available in many different programming languages for consuming the VMF format.
+
+Before describing the format in detail, Listing \ref{lst:completeExample} displays a complete example which can be referenced during the following discussion.
+
+\begin{Verbatim}[fontfamily=courier, xleftmargin=\parindent]
+{
+  "header": {
+    "tick_value": "1",
+    "number_of_parts": 2,
+    "number_of_voices": 2,
+    "time_signature": {
+        "0.0": "2/4"
+    },
+    "key_signature": {
+        "0.0": 0
+    },
+    "tempo": {
+      "0.0": 100
+    }
+  },
+  "body": [
+    [[1,-1,0,0,4,0],[1,-1,0,0,4,1]],
+    [[1,-1,0,4,4,0],[2,-1,0,0,4,1]],
+
+    [[1,-1,0,7,4,0],[1,-1,0,7,4,1]],
+    [[1,-1,0,4,4,0],[2,-1,0,7,4,1]]
+  ]
+}
+\end{Verbatim}
+
+\subsection{VMF Header}
+
+In order to interpret the musical data contained in a VMF file, some global information is required for reference. In VMF, this information is stored in the file header. The header object is a JSON object containing information regarding the number of independent parts and voices in a piece, along with the time signatures, key signatures and metronome markings with their locations in the score represented by the VMF file.

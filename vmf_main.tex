@@ -1,0 +1,70 @@
+%
+%-----------------------------------------------------------
+%% Computer Music Journal LaTeX template
+%%
+%% September  2009
+%% Author: Cornelia Kreutzer, University of Limerick
+
+%---Document preamble
+%
+\documentclass[letterpaper, 12pt]{article}
+
+\usepackage{cmjStyle} %use CMJ style
+\usepackage{natbib} %natbib package, necessary for customized cmj BibTeX style
+\bibpunct{(}{)}{;}{a}{}{,} %adapt style of references in text
+\doublespacing
+\raggedright % use this to remove spacing and hyphenation oddities
+%\setlength{\parindent}{0} % first para indent?
+\setlength{\parskip}{2ex}
+\parindent 24pt
+\urlstyle{same} % make url tags have the same font
+\setcounter{secnumdepth}{-1} % remove section numbering
+
+%% The package endfloat moves all floats (figures, tables...) to the end of the paper, as required for the final version of a CMJ paper.
+%% Leave this package commented out for initial submission, but uncomment it for final version. 
+% \usepackage{endfloat}
+
+%---Document----------
+\begin{document}
+
+{\cmjTitle VMF: A new file format for representing polyphonic music as vectors}
+\vspace*{24pt}
+
+(In the initial submission, omit all the following author information to ensure anonymity during peer review.)
+
+%author - name
+{\cmjAuthor Firstname Lastname}
+%author - address
+\newline
+\begin{cmjAuthorAddress}
+	Sound Computing Group\\
+	University of Anywhere\\
+	1234 Anywhere Street\\
+	Anywhere, Anwhere 012345 USA\\
+	email@email.com
+\end{cmjAuthorAddress}
+
+\vspace*{24pt}
+{\cmjAuthorPhone << AUTHOR TELEPHONE (not for publication): +44 999 999 9999 >>}
+\vspace*{24pt}
+
+\input{abstract.tex}
+\input{introduction.tex}
+\parskip 18pt
+\input{formatDefinition}
+\vspace*{24pt}
+
+%use of references
+Some examples for the use of references in the text:\\
+%author name in sentence, single authors
+\cite{Ano08}, \cite{Bele68}, \cite{Ther99}, \cite{Zica02},
+%author name in sentence, multiple authors
+\cite*{VeRo00}, \cite*{AtDa04}, 
+%reference in brackets, multiple authors
+\citep*{AtDa04} 
+
+%References
+\bibliographystyle{cmj}
+\bibliography{cmjbib}
+
+\end{document}
