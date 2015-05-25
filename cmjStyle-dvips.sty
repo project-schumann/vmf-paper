@@ -2,10 +2,9 @@
 %---CMJ style file---
 %
 %
-%% Filename: cmjStyle-pdftex.sty 
-%% Version 1.1, September 2011
-%% Copy of cmjStyle.sty, revised by DK to replace dvips with pdftex, for users who want to use pdftex.
-%% Original author of cmjStyle.sty: Cornelia Kreutzer, University of Limerick; Torsten Anders, University of Plymouth
+%% Filename: cmjStyle.sty 
+%% Version 1.0, September 2009
+%% Author: Cornelia Kreutzer, University of Limerick; Torsten Anders, University of Plymouth
 %% Style to use for preparing manuscripts for the Computer Music Journal (CMJ)
 %% based on the submission guidelines and a sample .tex file
 %
@@ -23,9 +22,9 @@
 \RequirePackage{wrapfig}
 \RequirePackage{palatino}
 \RequirePackage[margin=1in]{geometry}
-%\RequirePackage[pdftex]{epsfig,graphicx}
+%\RequirePackage[dvips]{epsfig,graphicx}
 \RequirePackage{epsfig,graphicx}
-\RequirePackage[pdftex,
+\RequirePackage[dvips,
     colorlinks=false, % no color links
     bookmarksnumbered, % use section numbers with bookmarks
     pdfstartview=XYZ % start with zoom=100% instead of full screen
@@ -85,3 +84,4 @@
   {0mm}%             beforeskip
   {0.001mm}%            afterskip
   {\it\selectfont}}% style
+
