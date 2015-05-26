@@ -250,3 +250,121 @@ This system is also extensible for cases where more than two systems are found t
 
 It must also be noted that when pickup measures are present, they are encoded as a full measure with the incomplete part padded with silence vectors.
 
+\subsubsection{Pitch}
+
+Now that the encoding system for rhythm has been established, the pitch encoding system is next to be discussed. In VMF, pitch information is divided into two parts, the pitch class and the octave. Starting from pitch class C to pitch class B, each pitch class is given an integer starting from 0. Table \ref{tab:pitchClassEncoding} provides a summary of this mapping. The octave part of a pitch is reporesented using the octave designations from the international pitch notation (ex. middle C is C4). As an example, the pitch for middle C in VMF would have 0 as the pitch class value and 4 as the octave value. Referring back to Figure \ref{fig:fiveVoiceTick}, the pitch class and octave dimensions can be seen used in conjunction.
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{ll}
+  Pitch Class & VMF Encoding \\ \hline
+  0           & $C$            \\
+  1           & $C\sharp$, $D\flat$      \\
+  2           & $D$            \\
+  3           & $D\sharp$, $E\flat$      \\
+  4           & $E$            \\
+  5           & $F$            \\
+  6           & $F\sharp$, $G\flat$      \\
+  7           & $G$            \\
+  8           & $G\sharp$, $A\flat$      \\
+  9           & $A$            \\
+  10          & $A\sharp$, $B\flat$      \\
+  11          & $B$            
+  \end{tabular}
+  \caption{Pitch Class Encoding}
+  \label{tab:pitchClassEncoding}
+\end{table}
+
+\subsubsection{Chords}
+
+The encoding method for chords works just like it does for individual pitches, but the vector length is extended to accomodate the additional notes. Because in VMF each vector must have the same number of dimensions, during the encoding process, the largest chord in each voice must be determined so that each vector is the correct length. For example, if the largest chord has four notes as in Figure \ref{fig:chordsWestern}, the notes of each chord will be encoded in the vector from left to right ordered from lowest to highest pitch. If a vector has fewer notes then the largest chord, unused dimensions are padded with a value of -1 to indicate that this dimension is unused. An example of this encoding is seen in Figure \ref{fig:chordsVMF}.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.75]{lilypond/chords}
+    \caption{Chord Progression}
+    \label{fig:chordsWestern}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \begin{Verbatim}[fontfamily=courier, xleftmargin=\parindent]
+    {
+      "body": [
+        // Each beat is seperated by a line for clarity.
+        [[1,-1,0,0,4,4,4,7,4,-1,-1,0]],
+        [[1,-1,0,9,3,0,4,5,4,-1,-1,0]],
+        [[1,-1,0,0,2,4,6,4,7,4,11,4,0]],
+        [[1,-1,0,0,4,4,4,7,4,-1,-1,0]]
+      ]
+    }
+    \end{Verbatim}
+    \caption{VMF encoding of a Chord Progression}
+    \label{fig:chordsVMF}
+  \end{center}
+\end{figure}
+
+\subsubsection{Voices}
+
+When a single part has multiple independent melodic voices, they are each encoded in their own vector within a tick as seen in \ref{fig:fiveVoiceTick} in the tenor part. In order to identify which part each voice belongs to, the last dimension in every vector is a part id. In this example, the soprano has an id of 0, the alto has an id of 1, both tenor voices have an id of 2, and the bass has an id of 3. With this system, voices can be regrouped if it is desired to reconstruct the encoded music in western notation.
+
+\subsubsection{Dynamics and Articulation}
+
+In VMF, dynamics and articulation each receive a dimension in a tick vector. The second dimension encodes dynamic and the third dimension encodes articulation. In both cases, the value of these dimensions can be determined using the following tables; Table \ref{tab:dynamicsMapping} for dynamics and Table \ref{tab:articulationsMapping} for articulations.
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{ll}
+  Dynamic & VMF Encoding \\ \hline
+  ppp      & -4 \\
+  pp       & -3 \\
+  p        & -2 \\
+  mp       & -1 \\
+  mf       & 1 \\
+  f        & 2 \\
+  ff       & 3 \\
+  fff      & 4 \\
+  \end{tabular}
+  \caption{Dynamics Encoding}
+  \label{tab:dynamicsMapping}
+\end{table}
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{ll}
+  Articulation & VMF Encoding \\ \hline
+  No Articulation      & 0 \\
+  Staccato             & 3 \\
+  Staccatissimo        & 4 \\
+  Strong Accent        & 5 \\
+  Accent               & 6 \\
+  Tenuto               & 7 \\
+  \end{tabular}
+  \caption{Articulation Encoding}
+  \label{tab:articulationsMapping}
+\end{table}
+
+\subsubsection{Summary of Tick Definition}
+
+As a summary of the definition of each positional dimention in a tick vector, Figure \ref{fig:vectorReference} is provided as a format structure key.
+
+\begin{figure}
+  \begin{center}
+    \begin{Verbatim}[fontfamily=courier, xleftmargin=\parindent]
+      [
+        attack,
+        dynamic,
+        articulation, 
+        pitch class 1, 
+        octave 1, 
+        pitch class 2, 
+        octave 2, 
+        ..., 
+        part id
+      ]
+    \end{Verbatim}
+    \caption{VMF Tick Legend}
+    \label{fig:vectorReference}
+  \end{center}
+\end{figure}
