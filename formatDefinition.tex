@@ -42,18 +42,94 @@ Before describing the format in detail, Figure \ref{fig:completeExample} display
 
 In order to interpret the musical data contained in a VMF file, some global information is required for reference. In VMF, this information is stored in the file header. The header object is a JSON object containing information regarding the score's structure, global musical signatures, and the sampling rate produced by the vectors in the body.
 
-The first two header paramters of importance are `'number\_of\_parts`' and `'number\_of\_voices`'. A VMF file is divided into several musical parts which each represent the music played by a single instrument or section. A part is then further subdivided into 1 or more voices. This would cover the case where an instrument is capable of playing more than one melodic line simultaneously such as the guitar or the piano.
+\subsubsection{Voices and Parts}
+
+The first two header paramters of importance are ``number\_of\_parts'' and ``number\_of\_voices''. A VMF file is divided into several musical parts which each represent the music played by a single instrument or section. A part is then further subdivided into 1 or more voices. This would cover the case where an instrument is capable of playing more than one melodic line simultaneously such as the guitar or the piano.
 
 The number of parts can be calculated by simply counting the number of individual parts contained in a score. The number of voices in a score is calculated a little bit differently; the maximum number of simultaneous voices in each part must be determined and these maximum values must be added together to arrive at the final value.
 
 For example, when examining Figure \ref{fig:voicesExample}, it is clear that there are four distinct parts (soprano, alto, tenor and bass), and therefore the number of parts recorded in the header would be four. Upon further examination, it can be seen that the soprano, alto and bass parts each have a maximum of 1 voice, while the tenor part has a maximum of 2 voices (measures 1-3). Because of this, the total number of voices in this example is five (the sum of the maximm number of voices in each part).
-
-
 
 \begin{figure}
   \begin{center}
     \includegraphics[scale=0.75]{lilypond/voices}
     \caption{Four part, five voice example}
     \label{fig:voicesExample}
+  \end{center}
+\end{figure}
+
+\subsubsection{Ticks}
+
+The ``tick\_value'' parameter is the most important parameter in VMF as this is the parameter which provides a time-duration value to each vector in the body. The tick value is the smallest rhythmic unit that can be represented in a given VMF file. This smallest unit is referred to as a ``tick''. The value which is assigned to this parameter expresses the fraction of a quarter note which is equivalent to a single tick. Table \ref{tab:tickValues} illustrates some common tick values.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ll}
+  Tick Value & Equivalent Rhythmic Unit \\ \hline
+  4          & 1 whole note             \\
+  2          & 1 half note              \\
+  1          & 1 quarter note           \\
+  1/2        & 1 eighth note            \\
+  1/3        & 1 triplet eighth note    \\
+  1/4        & 1 sixteenth note        
+  \end{tabular}
+  \caption{Common Tick Values}
+  \label{tab:tickValues}
+\end{table}
+
+\subsubsection{Time Signatures, Key Signatures, and Metronome}
+
+The last header parameters of importance are ``time\_signature'', ``key\_signature'', and ``tempo''. These three parameters all have the same structure; a JSON object containing key-value pairs where the key is the offset from the begininning of the piece in ticks, and the value is the key signature, time signature or metronome marking at that position.
+
+The value of a time signature item is formatted as a fraction (``upper value/lower value''), and the value of a tempo item is an integer representing beats per minute. The value of a key signature is represented as an integer indicating the number of sharps or flats which appear in a key signature (ex. ``4'' indicates four sharps, and ``-4'' indicates four flats). Table \ref{tab:keySignatures} provides a summary of the key signature encoding.
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{lll}
+    Major Key & Minor Key & Encoding \\ \hline
+    $C\sharp$   & $A\sharp$   & 7        \\
+    $F\sharp$   & $D\sharp$   & 6        \\
+    $B$         & $G\sharp$   & 5        \\
+    $E$         & $C\sharp$   & 4        \\
+    $A$         & $F\sharp$   & 3        \\
+    $D$         & $B$         & 2        \\
+    $G$         & $E$         & 1        \\
+    $C$         & $A$         & 0        \\
+    $F$         & $D$         & 1        \\
+    $B\flat$    & $G$         & 2        \\
+    $E\flat$    & $C$         & 3        \\
+    $A\flat$    & $F$         & 4        \\
+    $D\flat$    & $B\flat$    & 5        \\
+    $G\flat$    & $E\flat$    & 6        \\
+    $C\flat$    & $A\flat$    & 7        
+  \end{tabular}
+  \caption{Key Signature Encoding}
+  \label{tab:keySignatures}
+\end{table}
+
+Now that each of the header paramters have been defined, in Figure \ref{fig:voicesHeader}, the appropriate header is displayed for the western music notation in Figure \ref{fig:voicesExample}
+
+\begin{figure}
+  \begin{center}
+    \begin{Verbatim}[fontfamily=courier, xleftmargin=\parindent]
+    {
+      "header": {
+        "tick_value": "1/2",
+        "number_of_parts": 4,
+        "number_of_voices": 5,
+        "time_signature": {
+            "0.0": "4/4"
+        },
+        "key_signature": {
+            "0.0": -1
+        },
+        "tempo": {
+          "0.0": 93
+        }
+      }
+    }
+    \end{Verbatim}
+    \caption{Appropriate header for music in Figure \ref{fig:voicesExample}}
+    \label{fig:voicesHeader}
   \end{center}
 \end{figure}
