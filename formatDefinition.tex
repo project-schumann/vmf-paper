@@ -133,3 +133,120 @@ Now that each of the header paramters have been defined, in Figure \ref{fig:voic
     \label{fig:voicesHeader}
   \end{center}
 \end{figure}
+
+\subsection{VMF Body}
+
+\subsubsection{Arrangement of Arrays in Tick}
+
+The body of a VMF file consists of a JSON array containing one or more JSON arrays. Each of these sub arrays represents a single tick in time where the duration of this tick is that which is defined in the header. Within each ``tick array'', there is one array for each voice which is identified in the header. If there are five voices in a score, then each tick array should have 5 sub arrays within it. The contents of these sub arrays is the data representing each voice's musical data at that instance in time. Figure \ref{fig:fiveVoiceTick} is an illustration of how the body would be structured for the first tick of the music of Figure \ref{fig:voicesExample}.
+
+\begin{figure}
+  \begin{center}
+    \begin{Verbatim}[fontfamily=courier, xleftmargin=\parindent]
+    {
+      "body": [
+        // This outer array is a single tick. Represents a
+        // single instance in time.
+        [
+          // These inner arrays are the representation of each
+          // voice's musical data at this instance in time.
+          [1,-1,0,5,5,0],
+          [1,-1,0,0,5,1],
+          [1,-1,0,4,4,2],
+          [1,-1,0,0,4,2],
+          [1,-1,0,9,3,3]
+        ],
+        ...
+      ]
+    }
+    \end{Verbatim}
+    \caption{Body structure for the first tick of the music in Figure \ref{fig:voicesExample}}
+    \label{fig:fiveVoiceTick}
+  \end{center}
+\end{figure}
+
+\subsubsection{Time}
+
+VMF requires that each tick looks the same in terms of number of voices and vector length. If Figure \ref{fig:fiveVoiceTick} were to be extended, each subsequent tick would have five sub arrays, each with six dimensions just like the first tick. One way to think of this structure is that each voice during a given tick is represented by a vector and each tick is represented by a matrix formed by the combined vectors of each part.
+
+Since each tick represents the smallest rhythmic unit, in order to represent notes of a longer duration, an encoding is used in each vector to signify one of three possible states.
+
+If a note is attacked in a given tick, the first dimension of the vector will 1. If a note is sustained from the previous tick (in order to elongate a note), the first dimension of the vector will be 2. If there is silence in this tick, the first dimension of the vector will be 0.
+
+These three states are mutually exclusive and are summarized in Table \ref{tab:attackBits}.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ll}
+  Attack Dimension & Interpretation \\ \hline
+  0          & Rest             \\
+  1          & Attack              \\
+  2          & Sustain           \\
+  \end{tabular}
+  \caption{Interpretation of the Attack Dimension}
+  \label{tab:attackBits}
+\end{table}
+
+A special case comes up when dealing with music where the time signature changes, either temporarily (tuplets), or for a longer period of time. In this case, the greatest common denominator of the two time systems will be used. For example, if a piece is in the 4/4 time signature (with a tick value of 1/2), and a triplet (with a tick value of 1/3) is encountered, a global tick value of 1/6 (1/2 * 1/3) will be used to accommodate both systems. An example of this scheme is illustrated in Figure \ref{fig:mixedMeterVMF} where the music contained in Figure \ref{fig:mixedMeterWestern} is encoded.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.75]{lilypond/mixedMeter}
+    \caption{Triplet in 4/4 Time}
+    \label{fig:mixedMeterWestern}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \begin{Verbatim}[fontfamily=courier, xleftmargin=\parindent]
+    {
+      "header": {
+        "tick_value": "1/6",
+        "number_of_parts": 1,
+        "number_of_voices": 1,
+        "time_signature": { "0.0": "4/4" },
+        "key_signature": { "0.0": 0 },
+        "tempo": { "0.0": 100 }
+      },
+      "body": [
+        // Each beat is seperated by a line for clarity.
+        [[1,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+
+        [[1,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+        [[1,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+
+        [[1,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+        [[1,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+        [[1,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+
+        [[1,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+        [[2,-1,0,0,4,0]],
+      ]
+    }
+    \end{Verbatim}
+    \caption{VMF for Figure \ref{fig:mixedMeterWestern}}
+    \label{fig:mixedMeterVMF}
+  \end{center}
+\end{figure}
+
+This system is also extensible for cases where more than two systems are found together (ex. duple, triple, and n-tuple). In this case, the greatest common denominator satisfying all three systems will be used as it was in the previous example.
+
+It must also be noted that when pickup measures are present, they are encoded as a full measure with the incomplete part padded with silence vectors.
+
