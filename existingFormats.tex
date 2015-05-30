@@ -1,0 +1,41 @@
+%!TEX root = vmf_main.tex
+
+\section{Review of Existing Formats}
+
+Many music notation file formats exist today, each designed from a different standpoint for varying purposes. For this reason, the most relevant formats have been selected for review. The criteria for selecting a format is that it is a commonly used format, or that it posesses the capability to accurately encode music translated from western notation.
+
+The formats selected for this review are MIDI, Humdrum, and MusicXML.
+
+\subsection{MIDI}
+
+\subsection{Humdrum}
+
+The Humdrum toolkit \citep*{Huro02,Huro97} is a platform and collection of tools for music analysis and processing. The contents of a Humdrum file can be in the form of any of the roughly 30 predefined representations included with the Humdrum toolkit or any user defined representation which conforms to the Humdrum syntax. The most popular predefined representation is **kern, which is designed to represent the core information of common practice western music. Humdrum files are composed of ASCII text in the form of a two dimensional tab delimited table. In Humdrum, columns, which are called ``spines'', can be used to represent the different parts in a score or other information which needs to be associated with specific instances in the score such as lyrics or dynamic. Spines of different representation types can be combined to create a complete image of a score, for example, one spine could use **kern for defining pitch and duration, **dyn could be used for defining dynamics, and **text could be used for encoding lyrics. Additionally, throughout a Humdrum file, spines could be added, removed, split, or merged at any point in the file.
+
+While the Humdrum platform is very powerful, for some applications, this power can manifest itself as extra complexity and pre-processing may be required before a file is in a format which is well suited for use. Some sources of complexity arise when working with a corpus which isn't uniform in representation or when custom user defined representations are used. A lack of standardization in a corpus could lead to extra complications in the pre-processing stages of analysis, especially when essential data may be missing from some files.
+
+Another point where Humdrum may be unsuited for an application is a situation where random access is necessary. In Humdrum, items which appear on the same line happen at the same instance in time, but each line does not have the same duration. Instead, duration of a note is specified using integers as seen in Figure \ref{fig:humdrumDuration}. With this encoding scheme, each row has a different duration. As a result, there is no way to calculate which row corresponds to a specific location in a piece of music and thus the piece must be traversed from the beginning reading all of the duration declarations to determine where in the stream a location of interest is. Additionally, the full contextual information is not available in each row. As an example, in the first measure, one voice sustains the note ``G'' for a full measure while the other voice plays two half notes, ``G'' and ``B''. If the row describing the 2nd half note in this voice (the ``B'') is retrieved in isolation, there is no way to tell what note the other voice is playing without backtracking to the previous row where the whole note ``G'' is declared as an asterix is used to indicate the previous row being sustained.
+
+% LaTeX formats this weirdly, but this lines it up.
+\begin{figure}
+  \begin{center}
+    \begin{Verbatim}[fontfamily=courier, xleftmargin=\parindent]
+	**kern	**kern
+	*M4/4	 *M4/4
+	*MM100	*MM100
+	*k[f#]	*k[f#]
+	*G:	   *G:
+	*	     *
+	1g	    2g
+	.	     2b
+	=	     =
+	1g	    1g
+	=	     =
+	1g	    1b
+    \end{Verbatim}
+    \caption{Duration declaration in **kern}
+    \label{fig:humdrumDuration}
+  \end{center}
+\end{figure}
+
+\subsection{MusicXML}
