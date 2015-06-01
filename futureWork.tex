@@ -1,0 +1,11 @@
+%!TEX root = vmf_main.tex
+
+\section{Future Work}
+
+Future work which is of interest for the VMF project includes designing and building a synthesizer which can playback music encoded in VMF. At the current time, if one wishes to play back the music contained in a VMF file, they must first convert the VMF file to a MIDI file using the converter described earlier in this paper and then playing back the file using any of the available MIDI sequencers.
+
+If a synthesizer is implemented, the creation of a method to streamline input into VMF would also be of great use. As it stands, the only way to produce a VMF file is by converting an existing file from MIDI, Humdrum, MusicXML, or any other format currently supported by the music21 toolkit to VMF using the provided converter. An ideal adapter tool would be one which allows the use of a MIDI instrument such as a keyboard to be used to record directly to VMF.
+
+Finally, to open VMF recording to the world outside of MIDI, investigating how to convert an audio signal to an appropriate VMF encoding for simple monophonic melodies would be of great value for information retrieval applications allowing a user to play a melody on their instrument or to hum a melody into a microphone to query a VMF database for the score which the melody belongs to or other similar scores.
+
+The inclusion of a synthesizer and input adapters would definitely help to establish a robust toolkit surrounding VMF enabling more interesting applications featuring VMF to be created in the future.
