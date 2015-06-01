@@ -10,9 +10,7 @@ The formats selected for this review are MIDI, Humdrum, and MusicXML.
 
 MIDI \citep*{HeSe97} is most likely one of the most popular digital music formats as it has been used extensively in music performance and all major notation software packages have support for MIDI playback and recording from an external device. Although MIDI has had widespread adoption for music performance, playback and recording from a MIDI device, it is not well suited for encoding music from a music notation perspective.
 
-In MIDI, key concepts from western music notation such as meter and note durations are not encoded. Instead of working on a meter system as western music notation does, MIDI is based on sequencing timestamped events. Each note is assigned an id number in MIDI, and when a note is played, a timestamped MIDI event is recorded with the id of the note which is played and how loudly it is played (the concept of volume is referred to as velocity). Likewise, when a note is released, another event is recorded indicating which note has been released. By sequencing a collection of these MIDI events, accurate playback can be achieved. An example of MIDI encoding is shown in Figure. \ref{fig:midiEncoding}. While this system works well for playback, conversion to a western notation system is difficult and is not very accurate for more complicated works of music. When working with applications where accuracy is important or where music is being studied from a western notation point of view, MIDI is not a suitable or compatible choice.
-
-%TODO: Show MIDI Ex HERE.
+In MIDI, key concepts from western music notation such as meter and note durations are not encoded. Instead of working on a meter system as western music notation does, MIDI is based on sequencing timestamped events. Each note is assigned an id number in MIDI, and when a note is played, a timestamped MIDI event is recorded with the id of the note which is played and how loudly it is played (the concept of volume is referred to as velocity). Likewise, when a note is released, another event is recorded indicating which note has been released. By sequencing a collection of these MIDI events, accurate playback can be achieved. While this system works well for playback, conversion to a western notation system is difficult and is not very accurate for more complicated works of music. When working with applications where accuracy is important or where music is being studied from a western notation point of view, MIDI is not a suitable or compatible choice.
 
 \subsection{Humdrum}
 
@@ -26,18 +24,18 @@ Another point where Humdrum may be unsuited for an application is a situation wh
 \begin{figure}
   \begin{center}
     \begin{Verbatim}[fontfamily=courier, xleftmargin=\parindent]
-	**kern	**kern
-	*M4/4	 *M4/4
-	*MM100	*MM100
-	*k[f#]	*k[f#]
-	*G:	   *G:
-	*	     *
-	1g	    2g
-	.	     2b
-	=	     =
-	1g	    1g
-	=	     =
-	1g	    1b
+  **kern  **kern
+  *M4/4  *M4/4
+  *MM100  *MM100
+  *k[f#]  *k[f#]
+  *G:    *G:
+  *      *
+  1g      2g
+  .      2b
+  =      =
+  1g      1g
+  =      =
+  1g      1b
     \end{Verbatim}
     \caption{Duration declaration in **kern}
     \label{fig:humdrumDuration}
@@ -45,3 +43,41 @@ Another point where Humdrum may be unsuited for an application is a situation wh
 \end{figure}
 
 \subsection{MusicXML}
+
+Other than MIDI, and proprietary formats belonging to commercial music notation packages, another popular format is the MusicXML format \citep*{Good10}.The MusicXML format as suggest by its name is based on XML and provides a rich schema for describing music more accurately from a notational point of view. This characteristic makes it very well suited as an interchange format for music notation packages. Figure \ref{fig:xmlVoice} illustrates the use of MusicXML for a measure of a vocal part. As seen in this example, MusicXML provides many details important for the setting of a score such as stem placement and the font used for textual directives, but is comes at the cost of a lot of additional text for XML attributes and tags describing data which may not be relevant. In the case where it is necessary to examine the music contained in all parts at a given location in the score, MusicXML adds additional complexity as parts are seperated into different sections of the XML documnet. For example, in a piece for voice and piano, first the voice part would be described measure by measure from the beginning until the end of the piece. Following the closing tag for the voice part, the piano part would then be listed seperately after the voice part. For applications where data from both parts are required at the same time, the use of MusicXML is more difficult to deal with than a format such as Humdrum or VMF.
+
+\begin{figure}
+  \begin{center}
+  \begin{Verbatim}[fontfamily=courier, xleftmargin=\parindent]
+
+<part id="P1">
+  <measure number="2" width="302">
+    <direction placement="above">
+      <direction-type>
+        <words default-x="16"
+          default-y="15" font-size="9" font-style="italic">
+          dolce
+        </words>
+      </direction-type>
+    </direction>
+    <note default-x="27">
+      <pitch>
+        <step>G</step>
+        <octave>4</octave>
+      </pitch>
+      <duration>48</duration>
+      <voice>1</voice>
+      <type>quarter</type>
+      <stem default-y="6">up</stem>
+      <lyric default-y="-80" number="1">
+        <syllabic>single</syllabic>
+        <text>Dans</text>
+      </lyric>
+    </note>
+  </measure>
+</part>
+  \end{Verbatim}
+  \caption{MusicXML Example}
+  \label{fig:xmlVoice}
+ \end{center}
+\end{figure}
