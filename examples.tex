@@ -25,3 +25,6 @@ Once the two axes are properly prepared, the contents of the VMF body can be plo
     \label{fig:bwv108PianoRoll}
   \end{center}
 \end{figure}
+
+When creating a visualization directly from a MIDI file, the algorithm used depends on the type of MIDI file used. As described in ``Beyond MIDI'' \citep*{HeSe97}, there are three possible types of MIDI files; format 0, format 1, and format 2. Format 0 restricts data to a single track, format 1, allows multiple independent melodic tracks which are all synchronized to a single time line, and format 2 allows tracks which are temporally independent. When dealing with a format 0 or format 1 MIDI file, constructing the visualization is similar to visualizing a VMF file by plotting notes on the timeline by observing the note-on and note-off MIDI messages. When dealing with format 2 MIDI files, some additional work is necessary to synchronize all tracks to the same time line before plotting notes on the timeline.
+
