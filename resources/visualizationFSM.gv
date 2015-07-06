@@ -1,0 +1,15 @@
+digraph finite_state_machine {
+    rankdir=LR;
+    size="8,5"
+
+    node [shape = point]; qi
+    node [shape = circle, fixedsize=true]; rest;
+    node [shape = circle, fixedsize=true]; note;
+
+    qi   -> rest;
+    rest -> note [ label = "1 / startSegment()" ];
+    rest -> rest [ label = "0" ];
+    note -> rest [ label = "0 / endSegment()" ];
+    note -> note [ label = "2 / continueSgement()" ];
+    note:s -> note:e [ label = "1 / endSegment(); startSegment()"];
+}

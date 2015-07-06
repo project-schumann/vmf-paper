@@ -10,13 +10,13 @@ One of the key features of the Vector Music Format is that every ``tick'' has th
 
 Once the two axes are properly prepared, the contents of the VMF body can be plotted by iterating through the tick vectors one by one. Within each tick vector, the same process is repeated for each of the parts or voices contained within. First the attack dimension must be evaluated: if the value is 0, then there is a silence at this tick and the next tick can be evaluated. If the value is 1, then a rectangular segment is opened at the current tick position for the pitch depicted by the pitch class and octave dimensions of the vector. Finally, if the value of the attack dimension is 2, then the note is being sustained from a previous tick and the rectangular segment which was previously opened is extended. If the last vector had a value of 2 in the attack dimension and it is followed by a vector with a value of 1, the rectangular segment is closed and a new one is opened at that position to indication a new note attack. If the last vector had a value of 2 in the attack dimension and it is followed by a vector with a value of 0, the rectangular segment is simply closed and silence (empty space) follows in the current tick. This behavior can be summarized in the extended finite state machine diagram in \ref{fig:visualizationStateMachine}. A Python implementation of this procedure is available at \href{https://github.com/project-schumann/vmf-visualization}{Github} illustrating how this visualization can be easily generated with a single traversal of a VMF file by using the ruls illustrated in the finite state machine presented in \ref{fig:visualizationStateMachine}. A piano roll visualization of the last movement of J.S. Bach's BWV 108 genedated by this script is shown in \ref{fig:bwv108PianoRoll}.
 
-% \begin{figure}
-%   \begin{center}
-%     \includegraphics[scale=0.75]{resources/stateMachine}
-%     \caption{Visualization State Machine}
-%     \label{fig:visualizationStateMachine}
-%   \end{center}
-% \end{figure}
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.75]{resources/visualizationFSM}
+    \caption{Visualization State Machine}
+    \label{fig:visualizationStateMachine}
+  \end{center}
+\end{figure}
 
 \begin{figure}
   \begin{center}
