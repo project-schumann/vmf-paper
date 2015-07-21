@@ -2,11 +2,17 @@
 
 \section{Application Examples}
 
+\subsection{Music Retrieval and Prediction using Sparse Distributed Memory}
+
+A major advantage to using VMF is that it makes applications reliant on vectors much more accessible and convenient. One such example is storage and retrieval of music a sparse distributed memory \citep*{Kane88, Roge89}. A sparse distributed memory is an associative memory model proposed by Pentti Kanerva which unlike the standard random-access memory model, allows data to be retrieved using a memory address which is suffiently close to the actual storage location rather than the exact address where the data is stored. This concept gives sparse distributed memories special properties which make them resiliant to noise, errors and queries using partially complete memory addresses. Although Kanerva's original model works with address and data vectors consisting of binary bit values, improvements were made on the original model allowing an extended sparse distributed memory which works with vectors of integers for address and data vectors \citep*{Snai13}. Since VMF is primarily composed of integer vectors, this extension to the sparse distributed memory model is extremely valuable and essential for applications involving VMF.
+
+
+
 \subsection{Piano Roll Visualization}
 
 One method to quickly observe the general contour and structure of a piece of music is to visualize the music in a piano roll format. This is also a valuable tool for illustrating melodic contour and rhythmic composition to those who are unfamiliar with conventional music notation (an application of this type of representation is common in music and rhythm based video games). Music stored in the Vector Music Format can be easily converted to a piano roll graphical representation due to the structure of a VMF file.
 
-\subsection{Visualizing VMF}
+\subsubsection{Visualizing VMF}
 
 One of the key features of the Vector Music Format is that every ``tick'' has the same temporal value. Because of this feature, it is best that the x-axis (time) uses ticks in increments of one unit. For the y-axis, as in all piano roll visualizations, a horizontal division should be used for each key on the piano keyboard. The lowest pitches are placed at the bottom of the y-axis and the highest pitches are placed at the top of the y-axis. This axis configuration allows the reader to easily view rhythmic structure by reading the visualization from left to right and to easily view melodic countour by reading the visualization in the vertical sense.
 
@@ -28,17 +34,17 @@ Once the two axes are properly prepared, the contents of the VMF body can be plo
   \end{center}
 \end{figure}
 
-\subsection{MIDI Visualization}
+\subsubsection{MIDI Visualization}
 
 When creating a visualization directly from a MIDI file, the algorithm used depends on the type of MIDI file used. As described in ``Beyond MIDI'' \citep*{HeSe97}, there are three possible types of MIDI files; format 0, format 1, and format 2. Format 0 restricts data to a single track, format 1, allows multiple independent melodic tracks which are all synchronized to a single time line, and format 2 allows tracks which are temporally independent. When dealing with a format 0 or format 1 MIDI file, constructing the visualization is similar to visualizing a VMF file by plotting notes on the timeline by observing the note-on and note-off MIDI messages. When dealing with format 2 MIDI files, some additional work is necessary to synchronize all tracks to the same time line before plotting notes on the timeline.
 
-\subsection{Humdrum Visualization}
+\subsubsection{Humdrum Visualization}
 
 When using a Humdrum file using the **kern format as as source for a piano roll visualization, a pre-processing step is necessary to achieve the same accuracy that VMF provides. In **kern, each pitch token is given a duration value. These duration values are equivalent to rhythmic durations seen in western music notation (ex. eighth note, sixteenth note, ...). To build the time axis of a piano roll visualization and plot notes, the largest common denominator of all the duration values to display must be determined to be used as the basic time unit. For example, if the music in \ref{fig:voicesExample} was encoded as a **kern Humdrum file, a pre-processing stage is required to determine that the eighth note is the greatest common denominator of all duration values in the piece to be visualized. Once this unit is determined, notes can be plotted by calculating how many duration units is necessary to represent each note's length accurately. In the case of the music in \ref{fig:voicesExample}, an eighth note requires one unit, a quarter note requires two units, and a half note requires four units.
 
 By following this procedure, a **kern Humdrum file can be visualized, but the pre-processing step adds extra complexity which is not present when using a VMF file as a source.
 
-\subsection{MusicXML Visualization}
+\subsubsection{MusicXML Visualization}
 
 Like VMF and MIDI, MusicXML encodes duration using a ``tick'' system where note durations are described in terms of subdivisions of a quarter note. In the simplest of cases, this lends itself well to piano roll visualization as in the case of VMF, however, MusicXML has some differences in this system which can cause complications when constructing a visualization of this nature. In polyphonic music, MusicXML allows different parts to use a ticks of a different value to describe note duration. For example, it is acceptable for one part to have a tick value of one third of a quarter note and another part to have a tick value of one half of a quarter note. In a case like this, it would be necessary to convert all parts to use a common tick value to facilitate visualization. Finally, MusicXML also allows the value of a tick to change in the middle of a part. Like the last case, the entire part would have to be converted to use a common tick value for the same reasons.
 
