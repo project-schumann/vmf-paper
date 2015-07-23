@@ -12,7 +12,9 @@ In order to read music from the sparse distributed memory, the number of notes d
 
 In a sparse distributed memory, a finite number of hard locations exist evenly distributed throughout the address space. These hard locations are where the data is stored. When reading from a sparse distributed memory, the data contained in all hard locations within a predetermined radius called the activation radius is selected and a computation is applied on each dimension according to the state of the memory to return the data vector. An illustration of this procedure is shown in Figure \ref{fig:readingFromSDM}.
 
-To test the suitability of a sparse distributed memory a test has been developed and executed to determine the accuracy of retrieval from the memory with different window and corpus sizes. For each piece of music in the corpus, the window is filled with the first n notes dictated by the window size, and the memory is read to retrieve that piece of music. The accuracy of retrieval for that piece is then calculated by comparing the original VMF file with the data retrieved from the sparse distributed memory. Finally, the overall average accuracy of retrieval is determined using the values calculated for each piece of music in the corpus. This test procedure has been repeated with varying window and corpus sizes to study how the accuracy of reading from the sparse distributed memory varies with these parameters. The results of this study are visualized in Figure \ref{fig:sdmResults}.
+To test the suitability of a sparse distributed memory a test has been developed and executed to determine the accuracy of retrieval from the memory with different window and corpus sizes. For each piece of music in the corpus, the window is filled with the first n notes dictated by the window size, and the memory is read to retrieve that piece of music. The accuracy of retrieval for that piece is then calculated by comparing the original VMF file with the data retrieved from the sparse distributed memory. Finally, the overall average accuracy of retrieval is determined using the values calculated for each piece of music in the corpus. This test procedure has been repeated with varying window and corpus sizes to study how the accuracy of reading from the sparse distributed memory varies with these parameters. The results of this study are visualized in Figure \ref{fig:sdmResults}. As shown in the test results, the larger the window size, the more accurate the read operation will be. Varying the window size between four and eight notes will produce a drastic difference in accuracy, although a window size exceeding eight doesn't yield as much benefit. Using an eight note query is a resonable request for the purpose of retrieving a piece of music based on a melodic fragment, especially in standard practice western classical music. Another valuable result noticed in this study is that as the corpus size changes, the accuracy does not change nearly as much as when the window size is changed. Through the tests conducted, the system has remained scalable with the variance in corpus size, and suggests that the sparse distributed memory should be scalable beyond a corpus size of ten thousand. 
+
+The practicality illustrated by this study for a music retrieval system is very encouraging and opens up possibilities for other applications involving VMF and sparse distributed memories.
 
 \begin{figure}
   \begin{center}
@@ -21,7 +23,6 @@ To test the suitability of a sparse distributed memory a test has been developed
     \label{fig:sdmResults}
   \end{center}
 \end{figure}
-
 
 \subsection{Piano Roll Visualization}
 
