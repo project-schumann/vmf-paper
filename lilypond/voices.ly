@@ -1,3 +1,12 @@
+\paper {
+  indent=0\mm
+  line-width=120\mm
+  oddFooterMarkup=##f
+  oddHeaderMarkup=##f
+  bookTitleMarkup=##f
+  scoreTitleMarkup=##f
+}
+
 global = {
   \key f \major
   \time 4/4
