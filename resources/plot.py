@@ -30,4 +30,5 @@ surface = ax.plot_trisurf(x, y, z, cmap=cm.gray)
 fig.colorbar(surface, ticks=range(0,100,10), shrink=0.75)
 
 
+plt.savefig('sdm_gray.eps')
 plt.savefig('sdm_gray.png')
